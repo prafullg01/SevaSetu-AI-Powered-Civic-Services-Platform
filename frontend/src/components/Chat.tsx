@@ -1,8 +1,9 @@
-import React, { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { API_URL } from '../config';
 
 export default function Chat({ userId, language }: { userId: number, language: string }) {
-  const [messages, setMessages] = useState([
+  type Message = { id: number; role: string; content: string; isAi: boolean; sources?: number };
+  const [messages, setMessages] = useState<Message[]>([
     { id: 1, role: 'assistant', content: 'Namaste! I am CivicSaathi, your AI companion for civic services. How can I help you today?', isAi: true, sources: 0 }
   ]);
   const [input, setInput] = useState('');
@@ -63,8 +64,8 @@ export default function Chat({ userId, language }: { userId: number, language: s
                       <span className="w-1 h-1 rounded-full bg-indigo-400 animate-pulse"></span>
                       AI Response
                     </span>
-                    {msg.sources > 0 && (
-                      <span className="text-indigo-400/80">{msg.sources} source{msg.sources > 1 ? 's' : ''} cited</span>
+                    {(msg.sources ?? 0) > 0 && (
+                      <span className="text-indigo-400/80">{msg.sources} source{(msg.sources ?? 0) > 1 ? 's' : ''} cited</span>
                     )}
                   </div>
                 )}
