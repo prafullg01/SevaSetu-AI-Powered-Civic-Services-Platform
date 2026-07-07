@@ -3,7 +3,7 @@
 **AI-Powered Civic Services Platform** — A premium dark-theme web application that simplifies citizen-government interactions using AI.
 
 ### 🌐 Live Demo & Deployment
-- **Frontend (Vercel):** [https://sevasetu-ai-powered-civic-services-platform.vercel.app](https://sevasetu-ai-powered-civic-services-platform.vercel.app) *(Note: Replace with your exact Vercel URL if it differs)*
+- **Frontend (Vercel):** [https://seva-setu-ai-powered-civic-services-ten.vercel.app](https://seva-setu-ai-powered-civic-services-ten.vercel.app)
 - **Backend API (Render):** [https://civicsaathi-api.onrender.com](https://civicsaathi-api.onrender.com) *(Note: Replace with your exact Render URL if it differs)*
 
 ## Features
