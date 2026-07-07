@@ -1,4 +1,5 @@
 import React, { useState, useRef } from 'react';
+import { API_URL } from '../config';
 
 export default function Explain() {
   const [text, setText] = useState('');
@@ -18,9 +19,9 @@ export default function Explain() {
       let res: Response;
       if (inputMode === 'pdf' && pdfFile) {
         const fd = new FormData(); fd.append('file', pdfFile);
-        res = await fetch('http://localhost:8000/api/explain/pdf', { method: 'POST', body: fd });
+        res = await fetch(`${API_URL}/api/explain/pdf`, { method: 'POST', body: fd });
       } else {
-        res = await fetch('http://localhost:8000/api/explain', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ text }) });
+        res = await fetch(`${API_URL}/api/explain`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ text }) });
       }
       const data = await res.json();
       if (data.error) setError(data.error);

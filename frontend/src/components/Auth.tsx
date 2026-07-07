@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { API_URL } from '../config';
 
 type AuthProps = {
   onLogin: (user: { id: number; name: string; phone: string }) => void;
@@ -18,7 +19,7 @@ export default function Auth({ onLogin }: AuthProps) {
     const endpoint = isLogin ? '/api/auth/login' : '/api/auth/register';
     const body = isLogin ? { phone } : { phone, name };
     try {
-      const res = await fetch(`http://localhost:8000${endpoint}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+      const res = await fetch(`${API_URL}${endpoint}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
       const data = await res.json();
       if (!res.ok) setError(data.detail || 'Authentication failed');
       else onLogin(data);

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { API_URL } from '../config';
 import axios from 'axios';
 
 interface Application { id: number; status: string; submitted_at: string; user_name: string; service_name: string; }
@@ -14,15 +15,15 @@ export function AdminDashboard() {
 
   const fetchAll = async () => {
     try {
-      const [a, c] = await Promise.all([axios.get('http://localhost:8000/api/admin/applications'), axios.get('http://localhost:8000/api/admin/complaints')]);
+      const [a, c] = await Promise.all([axios.get(`${API_URL}/api/admin/applications`), axios.get(`${API_URL}/api/admin/complaints`)]);
       setApplications(a.data); setComplaints(c.data);
     } catch {} finally { setLoading(false); }
   };
   useEffect(() => { fetchAll(); }, []);
 
-  const handleVerify = async (id: number, status: string) => { try { await axios.post(`http://localhost:8000/api/admin/applications/${id}/verify`, { status }); fetchAll(); } catch { alert('Failed'); } };
-  const handleAddDoc = async (e: React.FormEvent) => { e.preventDefault(); if (!docTitle || !docUrl || !docContent) return; setAddingDoc(true); try { await axios.post('http://localhost:8000/api/admin/documents', { title: docTitle, source_url: docUrl, content: docContent, jurisdiction: "Local" }); alert('Added!'); setDocTitle(''); setDocUrl(''); setDocContent(''); } catch { alert('Failed'); } finally { setAddingDoc(false); } };
-  const handleRespond = async (id: number) => { const t = complaintResponses[id]; if (!t) return; try { await axios.post(`http://localhost:8000/api/admin/complaints/${id}/respond`, { response: t }); setComplaintResponses(p => ({ ...p, [id]: '' })); fetchAll(); } catch { alert('Failed'); } };
+  const handleVerify = async (id: number, status: string) => { try { await axios.post(`${API_URL}/api/admin/applications/${id}/verify`, { status }); fetchAll(); } catch { alert('Failed'); } };
+  const handleAddDoc = async (e: React.FormEvent) => { e.preventDefault(); if (!docTitle || !docUrl || !docContent) return; setAddingDoc(true); try { await axios.post(`${API_URL}/api/admin/documents`, { title: docTitle, source_url: docUrl, content: docContent, jurisdiction: "Local" }); alert('Added!'); setDocTitle(''); setDocUrl(''); setDocContent(''); } catch { alert('Failed'); } finally { setAddingDoc(false); } };
+  const handleRespond = async (id: number) => { const t = complaintResponses[id]; if (!t) return; try { await axios.post(`${API_URL}/api/admin/complaints/${id}/respond`, { response: t }); setComplaintResponses(p => ({ ...p, [id]: '' })); fetchAll(); } catch { alert('Failed'); } };
 
   const badge = (status: string) => {
     const m: Record<string, { l: string; c: string }> = {

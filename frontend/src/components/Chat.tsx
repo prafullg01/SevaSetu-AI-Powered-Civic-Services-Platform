@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { API_URL } from '../config';
 
 export default function Chat({ userId, language }: { userId: number, language: string }) {
   const [messages, setMessages] = useState([
@@ -33,7 +34,7 @@ export default function Chat({ userId, language }: { userId: number, language: s
     setMessages(prev => [...prev, userMsg]);
     setInput(''); setIsTyping(true);
     try {
-      const res = await fetch('http://localhost:8000/api/chat', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ query: input, user_id: userId, language }) });
+      const res = await fetch(`${API_URL}/api/chat`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ query: input, user_id: userId, language }) });
       const data = await res.json();
       setMessages(prev => [...prev, { id: Date.now(), role: 'assistant', content: data.answer, isAi: true, sources: data.sources?.length || 0 }]);
     } catch {

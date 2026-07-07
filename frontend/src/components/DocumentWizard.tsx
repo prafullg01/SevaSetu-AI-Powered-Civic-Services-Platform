@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { API_URL } from '../config';
 
 export default function DocumentWizard({ userId }: { userId: number }) {
   const [services, setServices] = useState<any[]>([]);
@@ -7,12 +8,12 @@ export default function DocumentWizard({ userId }: { userId: number }) {
   const [success, setSuccess] = useState(false);
 
   useEffect(() => {
-    fetch('http://localhost:8000/api/services').then(r => r.json()).then(setServices).catch(console.error);
+    fetch(`${API_URL}/api/services`).then(r => r.json()).then(setServices).catch(console.error);
   }, []);
 
   const handleApply = async () => {
     setLoading(true);
-    try { const res = await fetch('http://localhost:8000/api/applications', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ user_id: userId, service_id: selectedService.id }) }); if (res.ok) setSuccess(true); }
+    try { const res = await fetch(`${API_URL}/api/applications`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ user_id: userId, service_id: selectedService.id }) }); if (res.ok) setSuccess(true); }
     catch {} finally { setLoading(false); }
   };
 

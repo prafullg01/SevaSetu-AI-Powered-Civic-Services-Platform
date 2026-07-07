@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { API_URL } from '../config';
 
 export default function Dashboard({ userId }: { userId: number }) {
   const [conversations, setConversations] = useState<any[]>([]);
 
   useEffect(() => {
-    fetch(`http://localhost:8000/api/conversations?user_id=${userId}`)
+    fetch(`${API_URL}/api/conversations?user_id=${userId}`)
       .then(res => res.json()).then(setConversations).catch(console.error);
   }, []);
 

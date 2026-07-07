@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { API_URL } from '../config';
 
 export default function ComplaintTracker({ userId }: { userId: number }) {
   const [view, setView] = useState<'form' | 'timeline'>('form');
@@ -13,7 +14,7 @@ export default function ComplaintTracker({ userId }: { userId: number }) {
   React.useEffect(() => {
     const init = async () => {
       try {
-        const res = await fetch(`http://localhost:8000/api/complaints/user/${userId}`);
+        const res = await fetch(`${API_URL}/api/complaints/user/${userId}`);
         const data = await res.json();
         if (data && data.length > 0) {
           const latest = data[0];
@@ -29,7 +30,7 @@ export default function ComplaintTracker({ userId }: { userId: number }) {
 
   const submitComplaint = async (e: React.FormEvent) => {
     e.preventDefault();
-    const res = await fetch('http://localhost:8000/api/complaints', {
+    const res = await fetch(`${API_URL}/api/complaints`, {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ user_id: userId, category, description: desc, location })
     });
@@ -41,8 +42,8 @@ export default function ComplaintTracker({ userId }: { userId: number }) {
   const fetchTimeline = async (id: number) => {
     try {
       const [tlRes, detailsRes] = await Promise.all([
-        fetch(`http://localhost:8000/api/complaints/${id}/timeline`),
-        fetch(`http://localhost:8000/api/complaints/${id}`)
+        fetch(`${API_URL}/api/complaints/${id}/timeline`),
+        fetch(`${API_URL}/api/complaints/${id}`)
       ]);
       setTimeline(await tlRes.json());
       setComplaintStatus((await detailsRes.json()).status);
